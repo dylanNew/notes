@@ -132,3 +132,14 @@ NSString *ss= @"{"recommend":"世界末日","dogname":"机器人"}";
 error: No architectures to compile for (ONLY_ACTIVE_ARCH=YES, active arch=x86_64, VALID_ARCHS=i386).
 解决方法：
      targets ->build setting 下的 Build Active Architecture Only 设置 NO  即可.
+     
+     
+     Property's synthesized getter follows Cocoa naming convention for returning.
+
+今天早上在整理代码的时候发现了如上警告。
+
+在网上查询后发现，是因为苹果在新的编码，不推荐变量以new、copy等关键字开头。
+
+突然响起来之前也有朋友问过类似的问题。特做以记录。
+
+也希望大家在以后编码的时候，能够多多注意。
