@@ -1,0 +1,18 @@
+创建时间：2014.10.11
+
+	// Background
+	UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"messages_bg_1.png"]];
+//	backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.view insertSubview:backgroundImageView belowSubview:self.collectionView];
+//
+//	// Parallax effect
+	UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    interpolationHorizontal.minimumRelativeValue = @-20.0;
+    interpolationHorizontal.maximumRelativeValue = @20.0;
+	
+    UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    interpolationVertical.minimumRelativeValue = @-20.0;
+    interpolationVertical.maximumRelativeValue = @20.0;
+	
+    [backgroundImageView addMotionEffect:interpolationHorizontal];
+    [backgroundImageView addMotionEffect:interpolationVertical];
