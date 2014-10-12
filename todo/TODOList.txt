@@ -1,0 +1,4 @@
+9.29TODOList
+1.学习一个视频的开源库
+http://www.videolan.org/vlc/download-ios.html 
+2.学习插件
