@@ -1,0 +1,66 @@
+创建时间：2014.10.13
+
+
+注意，经测试，键盘有中文输入时的提高的高度时  也会发送UIKeyboardWillShowNotification 通告
+
+2个通告
+
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(keyboardWillShow:) 
+													 name:UIKeyboardWillShowNotification 
+												   object:nil];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(keyboardWillHide:) 
+													 name:UIKeyboardWillHideNotification 
+												   object:nil];		
+
+具体实现方法
+//Code from Brett Schumann
+-(void) keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+	// get a rect for the textView frame
+	CGRect containerFrame = containerView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+	
+	// set views with new info
+	containerView.frame = containerFrame;
+ 
+	
+	// commit animations
+	[UIView commitAnimations];
+}
+
+-(void) keyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = containerView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+	
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+
+	// set views with new info
+	containerView.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
+}
