@@ -1,0 +1,79 @@
+创建时间：2014.10.14
+
+1.首先创建ScrollView。并设置好各项属性
+  UIScrollView *itemScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+  [itemScrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+  [itemScrollView setBackgroundColor:[UIColor clearColor]];
+  [itemScrollView setDelegate:self];
+  [itemScrollView setMultipleTouchEnabled:YES];
+  [itemScrollView setMinimumZoomScale:1.0];
+  [itemScrollView setMaximumZoomScale:4.0];
+2.创建ImageView。其中ImageView 的坐标缩放比例 大小需要设置正确。
+创建的方法 对imageView的大小 坐标设置。
+- (void)reSetImageView:(UIImageView *)imgView image:(UIImage *)img;
+{
+    if (img == nil || imgView == nil)//参数不齐全
+    {
+        return;
+    }
+    
+    CGRect sourceRect = self.view.bounds;
+    
+    
+    CGFloat imgViewWidth;
+    CGFloat imgViewHeight;
+    
+    //优先确定 是按 高 还是 宽缩放
+    CGFloat imgRate = img.size.width / img.size.height;
+    CGFloat sourceRate = sourceRect.size.width / sourceRect.size.height;
+    if (imgRate > sourceRate)//目前只处理以宽为主的缩放。 还有一些俄情况
+    {
+        imgViewWidth = (img.size.width > sourceRect.size.width) ? sourceRect.size.width : img.size.width;
+        if (img.size.width > sourceRect.size.width)
+        {
+            CGFloat origin = sourceRect.size.width/img.size.width;
+            imgViewHeight = img.size.height * origin;
+        }
+        else
+        {
+            CGFloat origin = img.size.width/sourceRect.size.width;
+            imgViewHeight = sourceRect.size.height * origin;
+        }
+    }
+    else
+    {
+        imgViewHeight = (img.size.height > sourceRect.size.height) ? sourceRect.size.height : img.size.height;
+        if (img.size.height > sourceRect.size.height)
+        {
+            CGFloat origin = sourceRect.size.height/img.size.height;
+            imgViewWidth = img.size.width * origin;
+        }
+        else
+        {
+            CGFloat origin = img.size.height/sourceRect.size.height;
+            imgViewWidth = sourceRect.size.height * origin;
+        }
+    }
+    
+    imgView.bounds = CGRectMake(0, 0, imgViewWidth, imgViewHeight);
+    imgView.center = CGPointMake(sourceRect.size.width/2, sourceRect.size.height/2);
+    
+}
+
+3.需要实现ScrollView的2个重要的委托
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+      return 你的imageView;
+}
+
+//实现图片在缩放过程中居中
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    UIImageView *imgView = [scrollView.subviews objectAtIndex:0];//如果你的scrollview上只有一张图片时
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?(scrollView.bounds.size.width - scrollView.contentSize.width)/2 : 0.0;
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?(scrollView.bounds.size.height - scrollView.contentSize.height)/2 : 0.0;
+    imgView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);
+}
+
+
+4.主要旋转时 还是需要对ImageView进行重新设置。
