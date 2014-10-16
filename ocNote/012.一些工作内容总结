@@ -1,0 +1,11 @@
+创建时间：2014.10.15
+
+1.在iOS8中 无法自己在UIActionSheet 与UIAlert 上添加视图，需要自己定义custom 交互框
+2.一个关于CALayer position contains NaN：的错误，其中是需要对view的fram进行设置，否则在iOS8会出现这种错误.
+3.关于IOS8上的tabbar返回时image的颜色会变蓝德解决方法
+nav1.tabBarItem.image = [nav1.tabBarItem.image
+imageWithRenderingMode:UIImageRenderingModeA
+lwaysOriginal];
+
+4.在iOS7 与iOS8 上定位的方式需要改变
+5.关于Iphone6 缩放的问题，背景为像素的话其缩放会出现问题。建议将被禁
