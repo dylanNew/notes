@@ -1,0 +1,21 @@
+创建时间：2014.10.15
+
+1.首先你需要被拉进一个组中，或者你可以创建自己的账号进入，创建自己的仓库。
+2. 账号的申请与仓库的创建，。很容易，但是拉取，提交代码时需要添加自己的SSHKeys。
+这个是在Profile setting中 的 SSH Keys 中添加。至于你的SSK Keys的生成。帮助文档在http://gitlab.baozou.com/help/ssh/ssh.md
+
+第一步打开终端 输入 ssh-keygen -t rsa -C "$your_email"
+第二步会提示生成目录，可以使用默认目录（直接回车键）
+第三步会提示 输入密码：空的表示没有密码 （可以直接回车，不要密码）
+第四步会提示重复输入密码，
+
+接着会有 
+Your identification has been saved in /Users/dev/.ssh/id_rsa.
+Your public key has been saved in /Users/dev/.ssh/id_rsa.pub.
+提示，表示已经生成成功
+
+第五步查看公钥 cat  ~/.ssh/id_rsa.pub  你的公钥目录
+会出现 ssh-rsa ..............  @gmail.com   
+说明  我的邮箱是gamil的，把这个复制下 在 第二步中的添加SSH中粘贴进去就可以了。
+
+剩下的就是clone 仓库，提交代码等等了。。
