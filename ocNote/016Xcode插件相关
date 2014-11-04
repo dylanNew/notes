@@ -1,0 +1,11 @@
+创建时间：2014.11.4
+
+1.Xcode的插件目录为 ~/Library/Developer/Xcode/Templates/Project Templates/Application Plug-in/Xcode5 Plugin.xctemplate
+2.从Xcode5 以后apple增加UUIDverification才能使用插件，所有在编写插件时需要在plist中加入DVTPlugInCompatibilityUUIDs  
+其中需要包含你Xcode的UUID  
+其中Xcode的UUID 可以使用  defaults read /Applications/Xcode.app/Contents/Info DVTPlugInCompatibilityUUID
+参考地址：http://www.cocoachina.com/bbs/read.php?tid=161984
+
+3。顺便推荐一些有用的Xcode的插件
+VVDocumenter的 https://github.com/onevcat/VVDocumenter-Xcode   注释的
+FuzzyAutocompletePlugin的 https://github.com/FuzzyAutocomplete/FuzzyAutocompletePlugin  代码提示的
