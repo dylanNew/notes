@@ -1,0 +1,70 @@
+创建时间：2014.11.7
+
+1.关于iOS的手势的滑动方向定义：
+
+SSWDirectionalPanGestureRecognizer.h
+
+#import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSInteger, SSWPanDirection) {
+    SSWPanDirectionRight,
+    SSWPanDirectionDown,
+    SSWPanDirectionLeft,
+    SSWPanDirectionUp
+};
+
+/**
+ *  `SSWDirectionalPanGestureRecognizer` is a subclass of `UIPanGestureRecognizer`. It adds `direction` property and checks if the pan gesture started in the correct direction; it fails otherwise.
+ */
+@interface SSWDirectionalPanGestureRecognizer : UIPanGestureRecognizer
+
+@property (nonatomic) SSWPanDirection direction;
+
+@end
+
+
+SSWDirectionalPanGestureRecognizer.m
+#import "SSWDirectionalPanGestureRecognizer.h"
+#import <UIKit/UIGestureRecognizerSubclass.h>
+
+@interface SSWDirectionalPanGestureRecognizer()
+@property (nonatomic) BOOL dragging;
+@end
+
+@implementation SSWDirectionalPanGestureRecognizer
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+
+    if (self.state == UIGestureRecognizerStateFailed) return;
+
+    CGPoint velocity = [self velocityInView:self.view];
+
+    // check direction only on the first move
+    if (!self.dragging) {
+        NSDictionary *velocities = @{
+                                     @(SSWPanDirectionRight) : @(velocity.x),
+                                     @(SSWPanDirectionDown) : @(velocity.y),
+                                     @(SSWPanDirectionLeft) : @(-velocity.x),
+                                     @(SSWPanDirectionUp) : @(-velocity.y)
+                                     };
+        NSArray *keysSorted = [velocities keysSortedByValueUsingSelector:@selector(compare:)];
+
+        // Fails the gesture if the highest velocity isn't in the same direction as `direction` property.
+        if ([[keysSorted lastObject] integerValue] != self.direction) {
+            self.state = UIGestureRecognizerStateFailed;
+        }
+
+        self.dragging = YES;
+    }
+}
+
+- (void)reset
+{
+    [super reset];
+
+    self.dragging = NO;
+}
+
+@end
