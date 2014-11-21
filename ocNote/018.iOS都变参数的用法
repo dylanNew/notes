@@ -1,0 +1,18 @@
+创建时间：2014.11.21
+
+在oc中有一种很有用的传参方式:
+如：NSString 的+ (instancetype)stringWithFormat:(NSString *)format, ...  ;方法
+这种的实现是采用 变参的方法。 va_list 的使用
+
+具体使用方法如下：
+- (void)getPar:(NSString *)str, ...
+{
+    va_list arguments;
+    va_start(arguments, str);//声明一个 arguments 获取所有参数的头
+    NSString *arg;
+    while ((arg = va_arg(arguments, NSString *)))//当执行va_arg时 其会自动指向下一个参数
+    {
+        NSLog(@"%@",arg);
+    }
+    va_end(arguments);//结束的 需调用这个
+}
