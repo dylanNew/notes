@@ -1,3 +1,7 @@
 创建时间：2014.9.25
 
 https://bitbucket.org
+
+关于cocosPod的项目管理
+1.在使用Cocospod的项目中，项目中的版本控制的只有podfile 还有项目文件
+当你导下项目时，cd 到项目中开始使用pod install 安装pod，最后使用*.xcodeproj来打开项目进行开发。
